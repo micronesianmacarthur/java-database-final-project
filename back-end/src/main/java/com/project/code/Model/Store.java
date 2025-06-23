@@ -1,7 +1,70 @@
 package com.project.code.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
+@Entity
 public class Store {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull(message = "Store name cannot be null")
+    private String name;
+
+    @NotNull(message = "Address cannot be null")
+    private String address;
+
+    @OneToMany(mappedBy = "store")
+    @JsonManagedReference("inventory-store")
+    private List<Inventory> inventoryList;
+
+    // constructor
+    public Store() {}
+
+    public Store(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    // getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public List<Inventory> getInventoryList() {
+        return inventoryList;
+    }
+
+    public void setInventoryList(List<Inventory> inventoryList) {
+        this.inventoryList = inventoryList;
+    }
+
+}
 
 // 1. Add 'id' field:
 //    - Type: private long 
@@ -30,6 +93,3 @@ public class Store {
 
 // 7. Add Getters and Setters:
 //    - Add getter and setter methods for all fields (id, name, address).
-
-}
-
