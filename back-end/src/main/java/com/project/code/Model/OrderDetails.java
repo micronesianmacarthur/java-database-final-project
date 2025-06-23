@@ -20,7 +20,7 @@ public class OrderDetails {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    JsonManagedReference
+    @JsonManagedReference
     private Store store;
 
     private double totalPrice;
