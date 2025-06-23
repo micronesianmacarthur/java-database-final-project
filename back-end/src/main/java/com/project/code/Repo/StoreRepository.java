@@ -11,10 +11,10 @@ import java.util.List;
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
     // find store by id
-    public Store findById(long id);
+    Store findById(long id);
 
     // find store by sub name
     @Query("SELECT i FROM Store i WHERE LOWER(i.name) LIKE LOWER(CONCAT('%', :storeName, '%'))")
-    public List<Store> findBySubName(String storeName);
+    List<Store> findBySubName(String storeName);
 
 }
