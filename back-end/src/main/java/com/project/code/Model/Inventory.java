@@ -2,7 +2,6 @@ package com.project.code.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Inventory {
