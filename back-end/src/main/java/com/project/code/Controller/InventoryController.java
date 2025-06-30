@@ -109,29 +109,42 @@ public class InventoryController {
         if (category.equals("null")) {
             map.put("product", productRepository.findByNameLike(storeId, name));
             return map;
+        } else if (name.equals("null")) {
+            System.out.println("Name is null");
+            map.put("product", productRepository.findByCategoryAndStoreId(storeId, category));
+            return map;
         }
+        map.put("product", productRepository.findByNameAndCategory(storeId, name, category));
+        return map;
+    }
+
+    // search product
+    @GetMapping("/search/{name}/{storeId}")
+    public Map<String, Object> searchProduct(@PathVariable String name, @PathVariable Long storeId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("product", productRepository.findByNameLike(storeId, name));
+        return map;
+    }
+
+    // remove product
+    @DeleteMapping("/{id}")
+    public Map<String, String> removeProduct(@PathVariable Long id) {
+        Map<String, String> map = new HashMap<>();
+
+        if (!serviceClass.validateProductId(id)) {
+            map.put("message", "Id " + id + " not present in database");
+            return map;
+        }
+        inventoryRepository.deleteByProductId(id);
+        map.put("message", "Product deleted successfully");
+        return map;
+    }
+
+    // validate quantity
+    @GetMapping("/validate/{quantity}/{storeId}/{productId}")
+    public boolean validateQuantity(@PathVariable Integer quantity, @PathVariable Long storeId, @PathVariable Long productId) {
+        Inventory result = inventoryRepository.findByProductIdandStoreId(productId, storeId);
+        return result.getStockLevel() >= quantity;
     }
 
 }
-// 6. Define the `getProductName` Method:
-//    - This method handles HTTP GET requests to filter products by category and name.
-//    - If either the category or name is `"null"`, adjust the filtering logic accordingly.
-//    - Return the filtered products in the response with the key `"product"`.
-
-
-// 7. Define the `searchProduct` Method:
-//    - This method handles HTTP GET requests to search for products by name within a specific store.
-//    - It uses `name` and `storeId` as parameters and searches for products that match the `name` in the specified store.
-//    - The search results are returned in the response with the key `"product"`.
-
-
-// 8. Define the `removeProduct` Method:
-//    - This method handles HTTP DELETE requests to delete a product by its ID.
-//    - It first validates if the product exists. If it does, it deletes the product from the `ProductRepository` and also removes the related inventory entry from the `InventoryRepository`.
-//    - Returns a success message with the key `"message"` indicating successful deletion.
-
-
-// 9. Define the `validateQuantity` Method:
-//    - This method handles HTTP GET requests to validate if a specified quantity of a product is available in stock for a given store.
-//    - It checks the inventory for the product in the specified store and compares it to the requested quantity.
-//    - If sufficient stock is available, return `true`; otherwise, return `false`.

@@ -23,7 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByPriceBetween(double minPrice, double maxPrice);
 
     // find product by sku
-    Product findBySKU(String sku);
+    //Product findBySKU(String sku);
 
     // find by name
     Product findByName(String name);
